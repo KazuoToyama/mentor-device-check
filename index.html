@@ -4,286 +4,476 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
-<meta name="theme-color" content="#0D47A1">
+<meta name="theme-color" content="#0A2540">
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="Accept-CH" content="Sec-CH-UA-Platform-Version">
 <meta http-equiv="Delegate-CH" content="Sec-CH-UA-Platform-Version">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="no-referrer">
-<title>機種判定 | ベスプラ</title>
+<title>機種判定ツール｜株式会社ベスプラ</title>
 <style>
   :root {
-    --color-primary: #0D47A1;
-    --color-primary-dark: #082C6B;
-    --color-primary-light: #1976D2;
-    --color-bg: #F5F7FA;
+    --color-bg: #F4F6F9;
     --color-card: #FFFFFF;
+    --color-border: #D5DCE5;
+    --color-border-strong: #B8C2CF;
+
+    --color-primary: #0A2540;
+    --color-primary-mid: #1B3A5C;
+    --color-primary-light: #2E5A8A;
+    --color-accent: #0F62FE;
+
     --color-text: #1A1A1A;
-    --color-text-sub: #555555;
-    --color-border: #E0E0E0;
-    --color-success-bg: #E8F5E9;
-    --color-success-border: #43A047;
-    --color-success-text: #1B5E20;
-    --color-warning-bg: #FFF8E1;
-    --color-warning-border: #FFB300;
-    --color-warning-text: #6D4C00;
-    --color-info-bg: #E3F2FD;
-    --color-info-border: #1976D2;
-    --color-info-text: #0D47A1;
-    --radius: 12px;
-    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --color-text-sub: #5A6473;
+    --color-text-muted: #8A93A0;
+
+    --color-success: #0F7B3C;
+    --color-success-bg: #EBF5EE;
+    --color-success-border: #0F7B3C;
+
+    --color-warning: #8A5A00;
+    --color-warning-bg: #FDF6E3;
+    --color-warning-border: #C28A00;
+
+    --color-info: #0A4A8F;
+    --color-info-bg: #EDF3FA;
+    --color-info-border: #2E5A8A;
+
+    --radius: 4px;
+    --radius-lg: 6px;
+    --shadow-sm: 0 1px 2px rgba(10,37,64,0.06);
+    --shadow: 0 2px 6px rgba(10,37,64,0.08);
   }
+
   * { box-sizing: border-box; }
+
   html, body {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", "Meiryo", sans-serif;
     background: var(--color-bg);
     color: var(--color-text);
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-text-size-adjust: 100%;
-    font-size: 18px;
+    font-size: 16px;
+    letter-spacing: 0.01em;
   }
-  header {
-    background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+
+  /* ===== Header bar ===== */
+  .topbar {
+    background: var(--color-primary);
     color: #fff;
-    padding: 20px 16px 22px;
-    text-align: center;
+    padding: 10px 16px;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    border-bottom: 3px solid var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  header h1 {
-    margin: 0;
-    font-size: 1.5rem;
+  .topbar .brand {
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .topbar .org { opacity: 0.85; }
+
+  header.title {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+    padding: 22px 16px 18px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  header.title .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  header.title h1 {
+    margin: 0 0 4px;
+    font-size: 1.25rem;
     font-weight: 700;
+    color: var(--color-primary);
     letter-spacing: 0.02em;
   }
+  header.title p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-sub);
+  }
+
   main {
     max-width: 720px;
     margin: 0 auto;
-    padding: 16px;
+    padding: 20px 16px 16px;
   }
+
+  /* ===== Card ===== */
   .card {
     background: var(--color-card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 22px 20px;
-    margin-bottom: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 14px;
+    overflow: hidden;
   }
-  .card h2 {
-    margin: 0 0 16px;
-    font-size: 1.2rem;
+  .card-header {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-header .index {
+    background: #fff;
     color: var(--color-primary);
-    border-bottom: 2px solid var(--color-primary);
-    padding-bottom: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
-  .version-display {
+  .card-body {
+    padding: 18px 16px;
+  }
+
+  /* ===== Version display ===== */
+  .version-block {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
     text-align: center;
-    padding: 18px 12px;
+    padding: 8px 4px 12px;
   }
   .version-label {
     color: var(--color-text-sub);
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
   }
-  .version-value {
-    font-size: 3.2rem;
-    font-weight: 800;
+  .version-number {
+    font-size: 4.0rem;
+    font-weight: 700;
     color: var(--color-primary);
-    line-height: 1.1;
+    line-height: 1.0;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     letter-spacing: 0.02em;
   }
-  .version-value.empty {
-    color: var(--color-text-sub);
+  .version-number.empty {
+    color: var(--color-text-muted);
+    font-size: 1.0rem;
     font-style: italic;
-    font-size: 1.1rem;
+    font-family: inherit;
     font-weight: 500;
+    padding: 14px 0;
   }
-  .version-suffix {
+  .version-unit {
     color: var(--color-text-sub);
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 500;
-    margin-top: 4px;
+    letter-spacing: 0.04em;
   }
-  .status-box {
-    padding: 16px 18px;
-    border-radius: 8px;
+
+  /* ===== Status box ===== */
+  .status {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border-left: 4px solid;
+    align-items: flex-start;
     margin-bottom: 14px;
-    font-size: 1.05rem;
+  }
+  .status:last-child { margin-bottom: 0; }
+  .status-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .status-body {
+    font-size: 0.95rem;
     line-height: 1.6;
   }
-  .status-box.success {
+  .status-title {
+    font-weight: 700;
+    font-size: 1.0rem;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  .status.success {
     background: var(--color-success-bg);
-    border-left: 4px solid var(--color-success-border);
-    color: var(--color-success-text);
+    border-left-color: var(--color-success-border);
+    color: var(--color-success);
   }
-  .status-box.warning {
+  .status.success .status-icon { background: var(--color-success); }
+  .status.warning {
     background: var(--color-warning-bg);
-    border-left: 4px solid var(--color-warning-border);
-    color: var(--color-warning-text);
+    border-left-color: var(--color-warning-border);
+    color: var(--color-warning);
   }
-  .status-box.info {
+  .status.warning .status-icon { background: var(--color-warning); }
+  .status.info {
     background: var(--color-info-bg);
-    border-left: 4px solid var(--color-info-border);
-    color: var(--color-info-text);
+    border-left-color: var(--color-info-border);
+    color: var(--color-info);
   }
-  .status-box .status-title {
-    font-weight: 700;
-    margin-bottom: 6px;
+  .status.info .status-icon { background: var(--color-info); }
+
+  /* ===== App row ===== */
+  .app-purpose {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-sub);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
+  .app-name {
     font-size: 1.1rem;
-  }
-  .app-row {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-  .app-row:last-child { border-bottom: none; }
-  .app-row .app-name {
-    font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 10px;
     color: var(--color-text);
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
   }
+  .app-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-sub);
+    margin-bottom: 14px;
+    line-height: 1.55;
+  }
+
+  /* ===== Button ===== */
   .button {
     display: block;
     width: 100%;
-    padding: 16px 18px;
+    padding: 14px 16px;
     background: var(--color-primary);
     color: #fff;
     text-decoration: none;
     text-align: center;
-    border-radius: 8px;
+    border-radius: var(--radius);
     font-weight: 700;
-    font-size: 1.05rem;
-    border: none;
+    font-size: 1.0rem;
+    letter-spacing: 0.04em;
+    border: 1px solid var(--color-primary);
     cursor: pointer;
-    min-height: 56px;
+    min-height: 52px;
     font-family: inherit;
+    transition: background 0.15s, transform 0.05s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
-  .button:hover, .button:active { background: var(--color-primary-dark); }
+  .button:hover { background: var(--color-primary-mid); border-color: var(--color-primary-mid); }
+  .button:active { background: var(--color-primary-light); transform: translateY(1px); }
+  .button .arrow {
+    display: inline-block;
+    font-weight: 400;
+    margin-left: 2px;
+    opacity: 0.85;
+  }
+
+  /* ===== Notices ===== */
   .notice {
     padding: 14px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius);
     margin-bottom: 14px;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     line-height: 1.6;
     background: var(--color-warning-bg);
     border-left: 4px solid var(--color-warning-border);
+    color: var(--color-warning);
   }
-  .fallback-guide {
-    padding: 16px;
-    background: var(--color-info-bg);
-    border-radius: 8px;
-    border-left: 4px solid var(--color-info-border);
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: var(--color-info-text);
-  }
-  .fallback-guide strong { display: block; margin-bottom: 6px; }
-  footer {
+  .notice strong { display: block; margin-bottom: 4px; font-size: 1.0rem; }
+
+  /* ===== Loading ===== */
+  .loading {
     text-align: center;
-    padding: 20px 16px 36px;
-    font-size: 0.85rem;
-    color: var(--color-text-sub);
-    line-height: 1.8;
+    padding: 24px 16px;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 18px 16px 20px;
+    text-align: center;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    margin-top: 12px;
+  }
+  footer .footer-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  footer .org-name {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+  footer .role {
+    opacity: 0.85;
+    margin-bottom: 8px;
   }
   footer a {
-    color: var(--color-primary);
-    font-weight: 600;
-    text-decoration: none;
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
   }
-  footer a:hover { text-decoration: underline; }
+  footer a:hover { opacity: 0.85; }
+
+  /* ===== Device hiding rules ===== */
   .ios-only, .desktop-only { display: none; }
   body.is-ios .ios-only { display: block; }
   body.is-ios .android-only { display: none; }
   body.is-desktop .desktop-only { display: block; }
   body.is-desktop .android-only { display: none; }
   body.is-ios .apps-section { display: none; }
-  .loading {
-    text-align: center;
-    padding: 20px;
-    color: var(--color-text-sub);
-    font-size: 1rem;
-  }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>機種判定</h1>
+<div class="topbar">
+  <span class="brand">DEVICE CHECK TOOL</span>
+  <span class="org">株式会社ベスプラ</span>
+</div>
+
+<header class="title">
+  <div class="container">
+    <h1>機種判定ツール</h1>
+    <p>対面サポート現場用 ／ お客様の端末を確認し、案内アプリを判定します</p>
+  </div>
 </header>
 
 <main>
 
   <div class="notice ios-only">
-    <strong>このツールはAndroidスマートフォン専用です</strong><br>
+    <strong>このツールはAndroidスマートフォン専用です</strong>
     iPhoneでは利用できません。お客様のAndroidスマートフォンのChromeで開いてください。
   </div>
   <div class="notice desktop-only">
-    <strong>このツールはAndroidスマートフォン専用です</strong><br>
+    <strong>このツールはAndroidスマートフォン専用です</strong>
     パソコンからは検証用の表示のみです。実機はAndroidスマートフォン（Chrome）で確認してください。
   </div>
 
   <section class="card android-only" id="deviceCard">
-    <h2>お客様の端末</h2>
-    <div id="loadingMsg" class="loading">取得中…</div>
-    <div id="deviceInfo" class="version-display" style="display:none;">
-      <div class="version-label">Androidバージョン</div>
-      <div class="version-value" id="val-platform">―</div>
+    <div class="card-header">
+      <span class="index">01</span>
+      <span>端末情報</span>
+    </div>
+    <div class="card-body">
+      <div id="loadingMsg" class="loading">取得中…</div>
+      <div id="deviceInfo" class="version-block" style="display:none;">
+        <div class="version-label">Android Version</div>
+        <div class="version-number" id="val-platform">―</div>
+        <div class="version-unit">（メジャーバージョン）</div>
+      </div>
     </div>
   </section>
 
   <div class="apps-section">
 
   <section class="card" id="hcCard" style="display:none;">
-    <h2>ヘルスコネクト</h2>
-
-    <div class="status-box success" id="hcStatusSuccess" style="display:none;">
-      <div class="status-title">✅ 最初から使えます</div>
-      Android 14以上のため、ヘルスコネクトは端末に最初から入っています。追加のインストールは不要です。
+    <div class="card-header">
+      <span class="index">02</span>
+      <span>ヘルスコネクト</span>
     </div>
+    <div class="card-body">
 
-    <div class="status-box warning" id="hcStatusWarning" style="display:none;">
-      <div class="status-title">⚠️ インストールが必要です</div>
-      Android 13以下のため、Playストアからヘルスコネクトのインストールが必要です。
-    </div>
+      <div class="status success" id="hcStatusSuccess" style="display:none;">
+        <div class="status-icon">✓</div>
+        <div class="status-body">
+          <div class="status-title">最初から使えます</div>
+          Android 14以上のため、ヘルスコネクトは端末に標準で搭載されています。追加のインストールは不要です。
+        </div>
+      </div>
 
-    <div class="status-box info" id="hcStatusUnknown" style="display:none;">
-      <div class="status-title">ℹ️ 端末で確認してください</div>
-      Androidバージョンが取得できませんでした。お客様の端末で「設定 ＞ デバイス情報 ＞ Androidバージョン」を確認してください。
-      <br><br>
-      ・<strong>14以上</strong>の場合：最初から使えます（インストール不要）<br>
-      ・<strong>13以下</strong>の場合：下のボタンからインストール
-    </div>
+      <div class="status warning" id="hcStatusWarning" style="display:none;">
+        <div class="status-icon">!</div>
+        <div class="status-body">
+          <div class="status-title">インストールが必要です</div>
+          Android 13以下のため、Playストアからヘルスコネクトをインストールする必要があります。
+        </div>
+      </div>
 
-    <div class="app-row" id="hcInstallRow" style="display:none;">
-      <div class="app-name">Health Connect by Android</div>
-      <a class="button"
-         href="https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata"
-         target="_blank" rel="noopener noreferrer">
-        Playストアで開く / インストール
-      </a>
+      <div class="status info" id="hcStatusUnknown" style="display:none;">
+        <div class="status-icon">i</div>
+        <div class="status-body">
+          <div class="status-title">端末で確認してください</div>
+          Androidバージョンが取得できませんでした。お客様の端末で「設定 ＞ デバイス情報 ＞ Androidバージョン」を確認のうえ、下記の通り判断してください。
+          <br><br>
+          ・<strong>14以上</strong>の場合：標準搭載のため操作不要<br>
+          ・<strong>13以下</strong>の場合：下のボタンからインストール
+        </div>
+      </div>
+
+      <div id="hcInstallRow" style="display:none;">
+        <span class="app-purpose">健康データの中継アプリ</span>
+        <div class="app-name">ヘルスコネクト</div>
+        <p class="app-desc">歩数・心拍などの健康データを各アプリ間で受け渡すための公式ハブアプリです。</p>
+        <a class="button"
+           href="https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata"
+           target="_blank" rel="noopener noreferrer">
+          Playストアで開く<span class="arrow">›</span>
+        </a>
+      </div>
     </div>
   </section>
 
   <section class="card">
-    <h2>Google Fit</h2>
-    <div class="app-row">
+    <div class="card-header">
+      <span class="index">03</span>
+      <span>Google Fit</span>
+    </div>
+    <div class="card-body">
+      <span class="app-purpose">歩数を記録するアプリ</span>
       <div class="app-name">Google Fit</div>
+      <p class="app-desc">Googleが提供する歩数・活動量の記録アプリです。脳にいいアプリへの歩数連携に利用します。</p>
       <a class="button"
          href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness"
          target="_blank" rel="noopener noreferrer">
-        Playストアで開く / インストール
+        Playストアで開く<span class="arrow">›</span>
       </a>
     </div>
   </section>
 
   <section class="card">
-    <h2>脳にいいアプリ</h2>
-    <div class="app-row">
+    <div class="card-header">
+      <span class="index">04</span>
+      <span>脳にいいアプリ</span>
+    </div>
+    <div class="card-body">
+      <span class="app-purpose">本アプリ・最新版確認</span>
       <div class="app-name">脳にいいアプリ</div>
+      <p class="app-desc">最新版がインストールされているか確認します。古いバージョンの場合は更新してください。</p>
       <a class="button"
          href="https://play.google.com/store/apps/details?id=jp.bspr.braincure.jp"
          target="_blank" rel="noopener noreferrer">
-        Playストアで開く / 更新確認
+        Playストアで開く<span class="arrow">›</span>
       </a>
     </div>
   </section>
@@ -293,8 +483,11 @@
 </main>
 
 <footer>
-  運営：株式会社ベスプラ ／ 対面サポート現場用ツール<br>
-  <a href="https://kazuotoyama.github.io/legal-docs/mentor-device-check/privacy/" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
+  <div class="footer-inner">
+    <div class="org-name">株式会社ベスプラ</div>
+    <div class="role">対面サポート現場用 機種判定ツール</div>
+    <a href="https://kazuotoyama.github.io/legal-docs/mentor-device-check/privacy/" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
+  </div>
 </footer>
 
 <script>
@@ -311,7 +504,7 @@ else if (isDesktop && !isDebug) document.body.classList.add("is-desktop");
 
 function renderDevice(platformVer) {
   document.getElementById("loadingMsg").style.display = "none";
-  document.getElementById("deviceInfo").style.display = "block";
+  document.getElementById("deviceInfo").style.display = "grid";
 
   const majorVersion = platformVer ? parseInt(String(platformVer).split(".")[0], 10) : null;
   const platformCell = document.getElementById("val-platform");
@@ -333,13 +526,13 @@ function renderDevice(platformVer) {
   hcCard.style.display = "block";
 
   if (majorVersion == null || isNaN(majorVersion)) {
-    hcUnknown.style.display = "block";
+    hcUnknown.style.display = "grid";
     hcInstallRow.style.display = "block";
   } else if (majorVersion >= 14) {
-    hcSuccess.style.display = "block";
+    hcSuccess.style.display = "grid";
     hcInstallRow.style.display = "none";
   } else {
-    hcWarning.style.display = "block";
+    hcWarning.style.display = "grid";
     hcInstallRow.style.display = "block";
   }
 }
