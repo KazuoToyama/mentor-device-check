@@ -21,10 +21,6 @@
     --color-text: #1A1A1A;
     --color-text-sub: #555555;
     --color-border: #E0E0E0;
-    --color-success: #2E7D32;
-    --color-success-bg: #E8F5E9;
-    --color-warning: #E65100;
-    --color-warning-bg: #FFF3E0;
     --color-warning-banner-bg: #FFF8E1;
     --color-warning-banner-border: #FFB300;
     --radius: 12px;
@@ -111,29 +107,8 @@
   .app-row .app-name {
     font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--color-text);
-  }
-  .status-badge {
-    display: inline-block;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 700;
     margin-bottom: 10px;
-    background: #F0F0F0;
-    color: var(--color-text-sub);
-    border: 1px solid #D0D0D0;
-  }
-  .status-badge.installed {
-    background: var(--color-success-bg);
-    color: var(--color-success);
-    border-color: var(--color-success);
-  }
-  .status-badge.not-installed {
-    background: var(--color-warning-bg);
-    color: var(--color-warning);
-    border-color: var(--color-warning);
+    color: var(--color-text);
   }
   .button {
     display: block;
@@ -149,19 +124,9 @@
     border: none;
     cursor: pointer;
     min-height: 56px;
-    margin-bottom: 4px;
     font-family: inherit;
   }
   .button:hover, .button:active { background: var(--color-primary-dark); }
-  .lead {
-    background: #F0F4F8;
-    border-radius: 8px;
-    padding: 12px 14px;
-    margin-bottom: 14px;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: var(--color-text);
-  }
   .notice {
     padding: 14px 16px;
     border-radius: 8px;
@@ -231,34 +196,43 @@
   </section>
 
   <div class="apps-section">
+
+  <section class="card" id="hcCard" style="display:none;">
+    <h2>ヘルスコネクト</h2>
+    <div class="app-row">
+      <div class="app-name">Health Connect by Android</div>
+      <a class="button"
+         href="https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata"
+         target="_blank" rel="noopener noreferrer">
+        Playストアで開く / インストール
+      </a>
+    </div>
+  </section>
+
   <section class="card">
-    <h2>アプリの確認</h2>
-    <div class="lead">
-      ボタンをタップするとアプリが開きます。<br>
-      Playストアに飛んだ場合は <strong>未インストール</strong> です。
-    </div>
-
-    <div class="app-row" data-package="com.google.android.apps.healthdata">
-      <div class="app-name">ヘルスコネクト</div>
-      <div class="status-badge" data-role="status">未確認</div>
-      <button class="button" type="button" data-role="check-btn">アプリを開く / インストール</button>
-    </div>
-
-    <div class="app-row" data-package="com.google.android.apps.fitness">
+    <h2>Google Fit</h2>
+    <div class="app-row">
       <div class="app-name">Google Fit</div>
-      <div class="status-badge" data-role="status">未確認</div>
-      <button class="button" type="button" data-role="check-btn">アプリを開く / インストール</button>
+      <a class="button"
+         href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness"
+         target="_blank" rel="noopener noreferrer">
+        Playストアで開く / インストール
+      </a>
     </div>
   </section>
 
   <section class="card">
     <h2>脳にいいアプリ</h2>
-    <a class="button"
-       href="https://play.google.com/store/apps/details?id=jp.bspr.braincure.jp"
-       target="_blank" rel="noopener noreferrer">
-      Playストアで開く（更新確認）
-    </a>
+    <div class="app-row">
+      <div class="app-name">脳にいいアプリ</div>
+      <a class="button"
+         href="https://play.google.com/store/apps/details?id=jp.bspr.braincure.jp"
+         target="_blank" rel="noopener noreferrer">
+        Playストアで開く / 更新確認
+      </a>
+    </div>
   </section>
+
   </div>
 
 </main>
@@ -291,6 +265,7 @@ function renderDevice(data) {
 
   const rawModel = (data.model || "").trim();
   const platformVer = (data.platformVersion || "").trim();
+  const majorVersion = platformVer ? parseInt(platformVer.split(".")[0], 10) : null;
 
   const modelCell = document.getElementById("val-model");
   if (rawModel) {
@@ -303,11 +278,18 @@ function renderDevice(data) {
 
   const platformCell = document.getElementById("val-platform");
   if (platformVer) {
-    platformCell.textContent = platformVer.split(".")[0];
+    platformCell.textContent = String(majorVersion);
     platformCell.classList.remove("empty");
   } else {
     platformCell.textContent = "取得できませんでした";
     platformCell.classList.add("empty");
+  }
+
+  const hcCard = document.getElementById("hcCard");
+  if (majorVersion != null && majorVersion <= 13) {
+    hcCard.style.display = "block";
+  } else {
+    hcCard.style.display = "none";
   }
 }
 
@@ -330,53 +312,6 @@ async function detect() {
   }
   renderDevice(data);
 }
-
-function setStatus(badge, state) {
-  badge.classList.remove("installed", "not-installed");
-  if (state === "installed") {
-    badge.textContent = "インストール済み";
-    badge.classList.add("installed");
-  } else if (state === "not-installed") {
-    badge.textContent = "未インストール";
-    badge.classList.add("not-installed");
-  } else {
-    badge.textContent = "未確認";
-  }
-}
-
-function checkAppByIntent(row) {
-  const pkg = row.getAttribute("data-package");
-  const badge = row.querySelector('[data-role="status"]');
-  const fallbackUrl = "https://play.google.com/store/apps/details?id=" + pkg;
-  const intentUrl = "intent://#Intent;package=" + pkg + ";S.browser_fallback_url=" + encodeURIComponent(fallbackUrl) + ";end";
-
-  let appOpened = false;
-  const start = Date.now();
-  const onVisibility = () => {
-    if (document.visibilityState === "hidden") {
-      appOpened = true;
-    }
-  };
-  document.addEventListener("visibilitychange", onVisibility);
-
-  window.location.href = intentUrl;
-
-  setTimeout(() => {
-    document.removeEventListener("visibilitychange", onVisibility);
-    if (appOpened) {
-      setStatus(badge, "installed");
-    } else if (Date.now() - start < 3500) {
-      setStatus(badge, "not-installed");
-    }
-  }, 2500);
-}
-
-document.querySelectorAll('[data-role="check-btn"]').forEach(btn => {
-  btn.addEventListener("click", () => {
-    const row = btn.closest(".app-row");
-    checkAppByIntent(row);
-  });
-});
 
 if (isAndroidUA || isDebug || (navigator.userAgentData && navigator.userAgentData.mobile)) {
   detect();
